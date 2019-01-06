@@ -27,6 +27,7 @@ func TestInsert(t *testing.T) {
 
 func BenchmarkInsert(b *testing.B) {
 	tr := New(nil)
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		Insert(tr, i, i)
 	}
