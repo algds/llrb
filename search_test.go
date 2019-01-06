@@ -30,6 +30,7 @@ func BenchmarkSearch(b *testing.B) {
 	for i := 1; i <= 100; i++ {
 		Insert(tr, i, i)
 	}
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		Search(tr, i)
 	}
