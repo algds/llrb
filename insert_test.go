@@ -7,24 +7,28 @@ import (
 func TestInsert(t *testing.T) {
 	t.Parallel()
 	tr := New(nil)
-	Insert(tr, 5, "foo")
-	Insert(tr, 10, "baz")
-	Insert(tr, 1, "boo")
-	Insert(tr, 2, "boo")
-	Insert(tr, 3, "boo")
-	Insert(tr, 4, "boo")
-	Insert(tr, 8, "boo")
-	Insert(tr, 7, "boo")
-	Insert(tr, 6, "boo")
-	if tr.Size() != 9 {
-		t.Errorf("Size doesn't equal 9")
+	for i := 0; i < 50; i++ {
+		Insert(tr, i, i)
+	}
+	for i := 99; i >= 49; i-- {
+		Insert(tr, i, i)
+	}
+	if size := tr.Size(); size != 100 {
+		t.Errorf("Size doesn't equal 100 got %v", size)
 	}
 	Insert(tr, 10, "just a value update")
-	if tr.Size() != 9 {
+	if size := tr.Size(); size != 100 {
 		t.Errorf("Inserting the same key twice is a value update only.")
 	}
 	if tr.Size() != walkTreeSize(tr.(*tree).root) {
 		t.Errorf("Size should equal actual size")
+	}
+}
+
+func BenchmarkInsert(b *testing.B) {
+	tr := New(nil)
+	for i := 0; i < b.N; i++ {
+		Insert(tr, i, i)
 	}
 }
 
