@@ -1,7 +1,6 @@
 package llrb
 
 import (
-	"log"
 	"testing"
 )
 
@@ -20,12 +19,18 @@ func TestInsert(t *testing.T) {
 	if tr.Size() != 9 {
 		t.Errorf("Size doesn't equal 9")
 	}
-	Insert(tr, 10, "duplicates allowed")
-	if tr.Size() != 10 {
-		t.Errorf("Size doesn't equal 10")
+	Insert(tr, 10, "just a value update")
+	if tr.Size() != 9 {
+		t.Errorf("Inserting the same key twice is a value update only.")
 	}
-	log.Println(tr.(*tree).root)
-	log.Println(tr.(*tree).root.Left, tr.(*tree).root.Right)
-	log.Println(tr.(*tree).root.Left.Left, tr.(*tree).root.Left.Right)
-	log.Println(tr.(*tree).root.Right.Left, tr.(*tree).root.Right.Right)
+	if tr.Size() != walkTreeSize(tr.(*tree).root) {
+		t.Errorf("Size should equal actual size")
+	}
+}
+
+func walkTreeSize(n *node) int {
+	if n == nil {
+		return 0
+	}
+	return walkTreeSize(n.Left) + walkTreeSize(n.Right) + 1
 }
