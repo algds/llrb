@@ -35,10 +35,13 @@ func recRangeCount(n *node, cmp func(a, b Key) int, start, end Key) int {
 	if n == nil {
 		return 0
 	}
-	if cmp(n.K, start) >= 0 && cmp(n.K, end) <= 0 {
+	inboundsStart := cmp(n.K, start) >= 0
+	inboundsEnd := cmp(n.K, end) <= 0
+	if inboundsStart && inboundsEnd {
 		return 1 + recRangeCount(n.Left, cmp, start, end) +
 			recRangeCount(n.Right, cmp, start, end)
+	} else if inboundsEnd {
+		return recRangeCount(n.Right, cmp, start, end)
 	}
-	return recRangeCount(n.Left, cmp, start, end) +
-		recRangeCount(n.Right, cmp, start, end)
+	return recRangeCount(n.Left, cmp, start, end)
 }
