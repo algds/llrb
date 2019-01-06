@@ -62,6 +62,6 @@ func BenchmarkRangeCount(b *testing.B) {
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		RangeCount(tr, 0, 100)
+		RangeCount(tr, 6, 7)
 	}
 }
