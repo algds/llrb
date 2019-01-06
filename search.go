@@ -12,14 +12,10 @@ func search(n *node, cmp func(a, b Key) int, k Key) (Value, bool) {
 	if n == nil {
 		return nil, false
 	}
-	if cmp(n.K, k) == 0 {
+	if c := cmp(n.K, k); c == 0 {
 		return n.V, true
+	} else if c > 0 {
+		return search(n.Left, cmp, k)
 	}
-	if lv, found := search(n.Left, cmp, k); found {
-		return lv, found
-	}
-	if rv, found := search(n.Right, cmp, k); found {
-		return rv, found
-	}
-	return nil, false
+	return search(n.Right, cmp, k)
 }
