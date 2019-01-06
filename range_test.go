@@ -20,6 +20,10 @@ func TestRange(t *testing.T) {
 	if len(result) != 1 || result[0] != 100 {
 		t.Errorf("Inclusivity at end doesn't seem to work")
 	}
+	result = Range(tr, 49, 50)
+	if len(result) != 2 || result[0] != 49 || result[1] != 50 {
+		t.Errorf("Expected 2 values")
+	}
 }
 
 func BenchmarkRange(b *testing.B) {

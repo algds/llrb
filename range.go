@@ -10,15 +10,16 @@ func recRange(n *node, cmp func(a, b Key) int, start, end Key) []Value {
 	if n == nil {
 		return nil
 	}
-	var result []Value
-	if left := recRange(n.Left, cmp, start, end); left != nil {
-		result = append(result, left...)
+	if c := cmp(n.K, start); c < 0 {
+		return recRange(n.Right, cmp, start, end)
+	} else if c == 0 {
+		return append([]Value{n.V}, recRange(n.Right, cmp, start, end)...)
 	}
-	if cmp(n.K, start) >= 0 && cmp(n.K, end) <= 0 {
-		result = append(result, n.V)
+	if c := cmp(n.K, end); c > 0 {
+		return recRange(n.Left, cmp, start, end)
+	} else if c == 0 {
+		return append(recRange(n.Left, cmp, start, end), n.V)
 	}
-	if right := recRange(n.Right, cmp, start, end); right != nil {
-		result = append(result, right...)
-	}
-	return result
+	result := append(recRange(n.Left, cmp, start, end), n.V)
+	return append(result, recRange(n.Right, cmp, start, end)...)
 }
