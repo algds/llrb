@@ -23,3 +23,22 @@ func recRange(n *node, cmp func(a, b Key) int, start, end Key) []Value {
 	result := append(recRange(n.Left, cmp, start, end), n.V)
 	return append(result, recRange(n.Right, cmp, start, end)...)
 }
+
+// RangeCount returns the number of items within the inclusive range.
+// Useful before calling the actual Range function that returns data.
+func RangeCount(t Tree, start, end Key) int {
+	tr := t.(*tree)
+	return recRangeCount(tr.root, tr.compare, start, end)
+}
+
+func recRangeCount(n *node, cmp func(a, b Key) int, start, end Key) int {
+	if n == nil {
+		return 0
+	}
+	if cmp(n.K, start) >= 0 && cmp(n.K, end) <= 0 {
+		return 1 + recRangeCount(n.Left, cmp, start, end) +
+			recRangeCount(n.Right, cmp, start, end)
+	}
+	return recRangeCount(n.Left, cmp, start, end) +
+		recRangeCount(n.Right, cmp, start, end)
+}
