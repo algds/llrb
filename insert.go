@@ -15,12 +15,13 @@ func insert(pt *tree, n *node, cmp func(a, b Key) int, k Key, v Value) *node {
 	if isRed(n.Left) && isRed(n.Right) {
 		flipColors(n)
 	}
-	if c := cmp(k, n.K); c == 0 {
+	switch c := cmp(k, n.K); {
+	case c == 0:
 		n.V = v
 		pt.size-- // cancel the size increase for an update.
-	} else if c < 0 {
+	case c < 0:
 		n.Left = insert(pt, n.Left, cmp, k, v)
-	} else {
+	case c > 0:
 		n.Right = insert(pt, n.Right, cmp, k, v)
 	}
 	if isRed(n.Right) && !isRed(n.Left) {
