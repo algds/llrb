@@ -12,7 +12,16 @@ type Tree interface {
 // If nil is passed in, then the default integer compare function is used.
 func New(cmpFunc func(a, b Key) int) Tree {
 	if cmpFunc == nil {
-		cmpFunc = defaultIntCompare
+		cmpFunc = func(a, b Key) int {
+			ai := a.(int)
+			bi := b.(int)
+			if ai < bi {
+				return -1
+			} else if ai == bi {
+				return 0
+			}
+			return 1
+		}
 	}
 	return &tree{nil, 0, cmpFunc}
 }
@@ -22,17 +31,6 @@ type tree struct {
 	size int
 	// Compare compares two keys. -1 if a<b, 0 if a==b, and 1 if a>b
 	cmpFunc func(a, b Key) int
-}
-
-var defaultIntCompare = func(a, b Key) int {
-	ai := a.(int)
-	bi := b.(int)
-	if ai < bi {
-		return -1
-	} else if ai == bi {
-		return 0
-	}
-	return 1
 }
 
 // Size returns the number of elements in the tree.
