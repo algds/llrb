@@ -6,3 +6,5 @@
 
 # llrb
 left-leaning red-black tree
+
+For more information please refer to this [Wikipedia page.](https://en.wikipedia.org/wiki/Left-leaning_red%E2%80%93black_tree)
